@@ -30,6 +30,7 @@ const state = {
   nextKey:       'a',      // 'a' | 'b' — which key is expected next
   myFinished:    false,    // true once my car crosses the finish line
   countdownTimer: null,
+  raceTimer:     null,     // interval handle for the live race timer
 };
 
 // ─── Screen switching ─────────────────────────────────────────────────────────
@@ -38,9 +39,17 @@ function showScreen(id) {
   document.getElementById(id).classList.add('active');
 }
 
-// ─── Car image helper ─────────────────────────────────────────────────────────
-function carSVG(model) {
-  return `<img src="/cars/${model}.jpg" class="car-img" alt="${CAR_LABELS[model] || model}">`;
+// ─── Car SVG helper ───────────────────────────────────────────────────────────
+function carSVG(model, color) {
+  return `<svg viewBox="0 0 120 50" style="color:${color}; width:100%; height:100%"><use href="#car-${model}"/></svg>`;
+}
+
+// ─── Time formatter ───────────────────────────────────────────────────────────
+function formatTime(ms) {
+  const totalS = ms / 1000;
+  const m = Math.floor(totalS / 60);
+  const s = totalS % 60;
+  return m + ':' + (s < 10 ? '0' : '') + s.toFixed(1);
 }
 
 // ─── Medal helper ─────────────────────────────────────────────────────────────
@@ -173,8 +182,8 @@ function buildPlayerCard(player, hostId) {
   div.id = 'lobby-player-' + player.socketId;
 
   div.innerHTML = `
-    <div class="player-car-preview">
-      ${carSVG(player.carModel)}
+    <div class="player-car-preview" style="color:${player.carColor}">
+      ${carSVG(player.carModel, player.carColor)}
     </div>
     <div class="player-info">
       <div class="player-name">${player.name}${isMe ? ' <span style="color:var(--silver-400);font-weight:400;font-size:11px">(you)</span>' : ''}</div>
@@ -258,7 +267,7 @@ function buildLane(player, totalPlayers) {
       <div class="track-surface"></div>
       <div class="finish-line"></div>
       <div class="car-wrapper" id="car-${player.socketId}" style="left:0%">
-        ${carSVG(player.carModel)}
+        ${carSVG(player.carModel, player.carColor)}
       </div>
     </div>
     <div class="lane-progress" id="progress-${player.socketId}">0%</div>
@@ -279,6 +288,7 @@ function updateCarPosition(socketId, progress) {
 
 function startCountdown(startTime) {
   state.phase = 'countdown';
+  state.raceStartTime = startTime;
   buildRaceScreen();
   showScreen('screen-race');
 
@@ -309,6 +319,12 @@ function startCountdown(startTime) {
         overlay.classList.add('hidden');
         state.phase = 'racing';
         setActiveKey('a');
+        // Start live race timer
+        const timerEl = document.getElementById('race-timer');
+        if (timerEl) timerEl.textContent = '0:00.0';
+        state.raceTimer = setInterval(() => {
+          if (timerEl) timerEl.textContent = formatTime(Date.now() - state.raceStartTime);
+        }, 100);
       }, 700);
     }
   }, 100);
@@ -436,7 +452,7 @@ function buildPodium(results) {
     item.className = `podium-item podium-item-${cls}`;
     item.innerHTML = `
       <div class="podium-car-preview">
-        ${carSVG(player.carModel)}
+        ${carSVG(player.carModel, player.carColor)}
       </div>
       <div class="podium-player-name">${player.name}</div>
       <div class="podium-block">${medalText(pos)}</div>
@@ -460,6 +476,7 @@ function buildResultsList(results) {
         <span class="result-name">${player.name}${isMe ? ' ★' : ''}</span>
         <span class="result-car">${CAR_LABELS[player.carModel] || player.carModel}</span>
       </div>
+      <span class="result-time">${player.finishTime != null ? formatTime(player.finishTime) : ''}</span>
       ${player.dnf ? '<span class="dnf-badge">DNF</span>' : ''}
     `;
     list.appendChild(row);
@@ -629,6 +646,10 @@ function bindSocket() {
     // Disable A/B buttons when I finish, but keep watching others race
     if (socketId === state.mySocketId) {
       state.myFinished = true;
+      // Freeze timer at server-confirmed finish time
+      clearInterval(state.raceTimer);
+      const timerEl = document.getElementById('race-timer');
+      if (timerEl) timerEl.textContent = formatTime(time);
       document.getElementById('btn-a').disabled = true;
       document.getElementById('btn-b').disabled = true;
       // Remove active glow — race is over for me
@@ -640,6 +661,7 @@ function bindSocket() {
   socket.on('race-finished', ({ results }) => {
     state.phase = 'finished';
     clearInterval(state.countdownTimer);
+    clearInterval(state.raceTimer);
 
     setTimeout(() => {
       buildResults(results);
@@ -651,6 +673,8 @@ function bindSocket() {
   socket.on('room-reset', ({ players, hostId }) => {
     state.phase = 'lobby';
     state.clickCount = 0;
+    clearInterval(state.raceTimer);
+    state.raceTimer = null;
     state.players = {};
     players.forEach(p => { state.players[p.socketId] = p; });
     state.isHost = socket.id === hostId;

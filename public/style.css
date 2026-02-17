@@ -281,12 +281,11 @@ html, body {
   box-shadow: 0 0 12px rgba(192,192,192,0.14);
 }
 
-.car-option-img {
+.car-option-svg {
   width: 100%;
-  height: 52px;
-  object-fit: contain;
+  height: auto;
+  max-height: 36px;
   display: block;
-  border-radius: 4px;
 }
 
 .car-option-name {
@@ -436,11 +435,9 @@ html, body {
   height: 30px;
   flex-shrink: 0;
 }
-.player-car-preview .car-img {
+.player-car-preview svg {
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  display: block;
 }
 
 .player-info { flex: 1; min-width: 0; }
@@ -570,6 +567,14 @@ html, body {
   color: var(--silver-300);
 }
 
+.race-timer {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--silver-300);
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+}
+
 .race-header-right { display: flex; align-items: baseline; gap: 6px; }
 .race-click-label {
   font-size: 10px;
@@ -690,17 +695,16 @@ html, body {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: auto;
-  height: 36px;
+  width: 66px;
   left: 0;
   transition: left 0.08s linear;
   z-index: 3;
 }
-.car-wrapper .car-img {
-  height: 36px;
-  width: auto;
+.car-wrapper svg {
+  width: 100%;
+  height: auto;
   display: block;
-  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.9));
+  filter: drop-shadow(0 1px 4px rgba(0,0,0,0.8));
 }
 
 /* Finish badge on track */
@@ -947,7 +951,7 @@ html, body {
   width: 90px;
   height: 40px;
 }
-.podium-car-preview .car-img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.podium-car-preview svg { width: 100%; height: 100%; }
 
 .podium-player-name {
   font-size: 13px;
@@ -980,7 +984,7 @@ html, body {
 
 .result-row {
   display: grid;
-  grid-template-columns: 32px 14px 1fr auto;
+  grid-template-columns: 32px 14px 1fr auto auto;
   align-items: center;
   gap: 10px;
   padding: 9px 12px;
@@ -1024,6 +1028,16 @@ html, body {
   font-size: 11px;
   color: var(--silver-500);
   letter-spacing: 0.04em;
+}
+
+.result-time {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--silver-400);
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
 }
 
 .dnf-badge {

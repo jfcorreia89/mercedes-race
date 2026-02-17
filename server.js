@@ -72,7 +72,10 @@ function buildResultsArray(room) {
   const unfinished = players.filter(p => !p.finishedAt).sort((a, b) => b.progress - a.progress);
   let rank = finished.length;
   unfinished.forEach(p => { p.rank = ++rank; p.dnf = true; });
-  return [...finished, ...unfinished].map(serializePlayer);
+  return [...finished, ...unfinished].map(p => ({
+    ...serializePlayer(p),
+    finishTime: p.finishedAt && room.raceStartedAt ? p.finishedAt - room.raceStartedAt : null,
+  }));
 }
 
 function checkAllFinished(room, roomCode) {
