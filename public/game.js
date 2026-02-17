@@ -376,8 +376,10 @@ function bindRace() {
     });
   });
 
-  // Keyboard support
+  // Keyboard support — ignore when user is typing in an input
   document.addEventListener('keydown', e => {
+    const tag = document.activeElement.tagName;
+    if (tag === 'INPUT' || tag === 'TEXTAREA') return;
     const k = e.key.toLowerCase();
     if (k === 'a' || k === 'b') {
       e.preventDefault();
