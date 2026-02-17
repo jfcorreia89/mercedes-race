@@ -132,7 +132,7 @@ io.on('connection', (socket) => {
   // ── Create room ─────────────────────────────────────────────────────────────
   socket.on('create-room', ({ name, carModel }) => {
     const safeName = sanitize(name);
-    const safeModel = ['s-class', 'amg-gt', 'g-class', 'c-class', 'eqs', 'gle'].includes(carModel) ? carModel : 's-class';
+    const safeModel = ['a-class', 'cla', 'amg-gt', '300sl', 'amg-gtr', 'c-class'].includes(carModel) ? carModel : 'a-class';
 
     const code = generateRoomCode();
     const player = {
@@ -174,7 +174,7 @@ io.on('connection', (socket) => {
     if (room.players.size >= 16) return socket.emit('join-error', { reason: 'Room is full (max 16 players).' });
 
     const safeName = sanitize(name);
-    const safeModel = ['s-class', 'amg-gt', 'g-class', 'c-class', 'eqs', 'gle'].includes(carModel) ? carModel : 's-class';
+    const safeModel = ['a-class', 'cla', 'amg-gt', '300sl', 'amg-gtr', 'c-class'].includes(carModel) ? carModel : 'a-class';
 
     const player = {
       socketId: socket.id,
@@ -208,7 +208,7 @@ io.on('connection', (socket) => {
     if (!room) return socket.emit('rejoin-failed', { reason: 'Room no longer exists.' });
 
     const safeName = sanitize(name);
-    const safeModel = ['s-class', 'amg-gt', 'g-class', 'c-class', 'eqs', 'gle'].includes(carModel) ? carModel : 's-class';
+    const safeModel = ['a-class', 'cla', 'amg-gt', '300sl', 'amg-gtr', 'c-class'].includes(carModel) ? carModel : 'a-class';
 
     const player = {
       socketId: socket.id,

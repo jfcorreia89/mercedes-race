@@ -2,12 +2,12 @@
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const CAR_LABELS = {
-  's-class': 'S-Class',
+  'a-class': 'A-Class',
+  'cla':     'CLA',
   'amg-gt':  'AMG GT',
-  'g-class': 'G-Class',
+  '300sl':   '300 SL',
+  'amg-gtr': 'AMG GT R',
   'c-class': 'C-Class',
-  'eqs':     'EQS',
-  'gle':     'GLE',
 };
 
 const VALID_MODELS = Object.keys(CAR_LABELS);
@@ -38,9 +38,9 @@ function showScreen(id) {
   document.getElementById(id).classList.add('active');
 }
 
-// ─── Car SVG helper ───────────────────────────────────────────────────────────
-function carSVG(model, color) {
-  return `<svg viewBox="0 0 120 50" style="color:${color}; width:100%; height:100%"><use href="#car-${model}"/></svg>`;
+// ─── Car image helper ─────────────────────────────────────────────────────────
+function carSVG(model) {
+  return `<img src="/cars/${model}.jpg" class="car-img" alt="${CAR_LABELS[model] || model}">`;
 }
 
 // ─── Medal helper ─────────────────────────────────────────────────────────────
@@ -173,8 +173,8 @@ function buildPlayerCard(player, hostId) {
   div.id = 'lobby-player-' + player.socketId;
 
   div.innerHTML = `
-    <div class="player-car-preview" style="color:${player.carColor}">
-      ${carSVG(player.carModel, player.carColor)}
+    <div class="player-car-preview">
+      ${carSVG(player.carModel)}
     </div>
     <div class="player-info">
       <div class="player-name">${player.name}${isMe ? ' <span style="color:var(--silver-400);font-weight:400;font-size:11px">(you)</span>' : ''}</div>
@@ -258,7 +258,7 @@ function buildLane(player, totalPlayers) {
       <div class="track-surface"></div>
       <div class="finish-line"></div>
       <div class="car-wrapper" id="car-${player.socketId}" style="left:0%">
-        ${carSVG(player.carModel, player.carColor)}
+        ${carSVG(player.carModel)}
       </div>
     </div>
     <div class="lane-progress" id="progress-${player.socketId}">0%</div>
@@ -269,8 +269,7 @@ function buildLane(player, totalPlayers) {
 function updateCarPosition(socketId, progress) {
   const car = document.getElementById('car-' + socketId);
   if (!car) return;
-  // Car is ~66px wide, track width variable. Use % for responsive layout.
-  // Map 0-100% progress to 0-88% left (so car nose touches finish line at 100)
+  // Map 0–100 progress to 0–88% left offset (car reaches finish line at 100)
   const leftPct = (progress / 100) * 88;
   car.style.left = leftPct + '%';
 
@@ -287,10 +286,13 @@ function startCountdown(startTime) {
   const numEl   = document.getElementById('countdown-number');
   overlay.classList.remove('hidden');
 
+  const hintEl = document.getElementById('countdown-hint');
+
   state.countdownTimer = setInterval(() => {
     const remaining = Math.ceil((startTime - Date.now()) / 1000);
     if (remaining > 0) {
       numEl.textContent = remaining;
+      if (hintEl) hintEl.classList.remove('hidden');
       // Re-trigger animation
       numEl.style.animation = 'none';
       void numEl.offsetWidth; // reflow
@@ -298,12 +300,16 @@ function startCountdown(startTime) {
     } else {
       clearInterval(state.countdownTimer);
       numEl.textContent = 'GO!';
+      if (hintEl) hintEl.classList.add('hidden');
       numEl.style.animation = 'none';
       void numEl.offsetWidth;
       numEl.style.animation = '';
-      state.phase = 'racing';
-      setActiveKey('a'); // highlight A as first key to press
-      setTimeout(() => overlay.classList.add('hidden'), 700);
+      // Only enable input AFTER the overlay is hidden — prevents pressing during GO!
+      setTimeout(() => {
+        overlay.classList.add('hidden');
+        state.phase = 'racing';
+        setActiveKey('a');
+      }, 700);
     }
   }, 100);
 }
@@ -354,7 +360,12 @@ function handleKeyPress(key) {
   state.clickCount++;
   const myProgress = Math.min(CLICKS_TO_FINISH, state.clickCount);
   updateCarPosition(state.mySocketId, myProgress);
-  document.getElementById('race-click-count').textContent = state.clickCount;
+  document.getElementById('race-click-count').textContent = Math.min(CLICKS_TO_FINISH, state.clickCount);
+
+  // Optimistically stop input once we hit 100 — don't wait for server round-trip
+  if (state.clickCount >= CLICKS_TO_FINISH) {
+    state.myFinished = true;
+  }
 
   // Visual feedback
   flashPressed(key);
@@ -425,7 +436,7 @@ function buildPodium(results) {
     item.className = `podium-item podium-item-${cls}`;
     item.innerHTML = `
       <div class="podium-car-preview">
-        ${carSVG(player.carModel, player.carColor)}
+        ${carSVG(player.carModel)}
       </div>
       <div class="podium-player-name">${player.name}</div>
       <div class="podium-block">${medalText(pos)}</div>

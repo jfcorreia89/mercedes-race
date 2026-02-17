@@ -25,69 +25,105 @@
       "/>
     </symbol>
 
-    <!-- Reusable wheel (3-spoke alloy) -->
-    <symbol id="wheel" viewBox="-8 -8 16 16">
-      <circle r="7.5" fill="#111"/>
-      <circle r="6" fill="#222"/>
-      <circle r="4.8" fill="#2e2e2e"/>
-      <path d="M0,-4 L0,4 M-3.46,-2 L3.46,2 M3.46,-2 L-3.46,2"
-            stroke="#111" stroke-width="2.2" fill="none"/>
-      <circle r="1.8" fill="#4a4a4a"/>
-      <circle r="0.9" fill="#777"/>
+    <symbol id="car-a-class" viewBox="0 0 120 50">
+      <ellipse cx="60" cy="48.5" rx="50" ry="2" fill="rgba(0,0,0,0.5)"/>
+      <!-- Body (short nose, tall cabin, steep hatch) -->
+      <path fill="currentColor" d="
+        M8,41 L8,29
+        C9,19 19,13 30,11
+        L60,10 L84,10
+        C99,10 110,17 115,29
+        L116,36 L116,41
+        C106,44 91,45 82,45
+        C77,45 74,42 72,40
+        L48,40
+        C45,45 33,45 20,45
+        C13,45 8,43 8,41 Z
+      "/>
+      <!-- Body highlight -->
+      <path fill="rgba(255,255,255,0.07)" d="
+        M30,11 L60,10 L84,10
+        C99,10 110,17 115,29
+        L108,21 C100,13 90,9 76,9
+        L55,9 C43,9 32,11 25,16 Z
+      "/>
+      <!-- Glass (tall, upright hatchback) -->
+      <path fill="rgba(160,210,255,0.22)" d="
+        M28,12 C38,10 53,10 65,10
+        L84,10 C99,10 109,17 114,29
+        L97,31 L30,31
+        C25,24 25,17 28,12 Z
+      "/>
+      <!-- Rear hatch window (steep angle) -->
+      <path fill="rgba(160,210,255,0.2)" d="M97,31 L114,29 L116,36 L97,36 Z"/>
+      <!-- B-pillar -->
+      <rect x="63" y="10" width="3" height="21" rx="1.5" fill="rgba(0,0,0,0.4)"/>
+      <!-- Steep C-pillar / hatch -->
+      <path fill="rgba(0,0,0,0.3)" d="M84,10 L114,29 L97,31 L84,10 Z"/>
+      <!-- Angular DRL headlight -->
+      <rect x="9" y="22" width="8" height="3" rx="1" fill="rgba(255,255,210,0.9)"/>
+      <rect x="9" y="26" width="5" height="2" rx="1" fill="rgba(255,180,80,0.7)"/>
+      <!-- Taillight (full height) -->
+      <rect x="112" y="27" width="3" height="9" rx="1" fill="rgba(255,50,50,0.85)"/>
+      <!-- Wheel well shadows -->
+      <ellipse cx="30" cy="44" rx="11" ry="3.5" fill="rgba(0,0,0,0.55)"/>
+      <ellipse cx="87" cy="44" rx="11" ry="3.5" fill="rgba(0,0,0,0.55)"/>
+      <!-- Wheels -->
+      <use href="#wheel" x="22" y="36" width="16" height="16"/>
+      <use href="#wheel" x="79" y="36" width="16" height="16"/>
     </symbol>
 
-    <!-- S-Class: long luxury sedan, 3-box proportions -->
-    <symbol id="car-s-class" viewBox="0 0 120 50">
-      <ellipse cx="60" cy="48.5" rx="52" ry="2" fill="rgba(0,0,0,0.5)"/>
-      <!-- Body -->
+    <!-- CLA: 4-door fastback coupe -->
+    <symbol id="car-cla" viewBox="0 0 120 50">
+      <ellipse cx="60" cy="48.5" rx="51" ry="2" fill="rgba(0,0,0,0.5)"/>
+      <!-- Body (long, low, sweeping roofline) -->
       <path fill="currentColor" d="
-        M6,41 L6,34
-        C7,24 17,20 27,18
-        L48,14 L78,14
-        C93,14 103,20 112,28
+        M7,41 L7,34
+        C8,24 18,19 28,17
+        L50,13 L80,13
+        C94,13 104,19 111,28
         L114,35 L114,41
-        C103,43 90,44 80,44
-        C76,44 73,41 70,39
-        L50,39
-        C47,44 35,44 22,44
-        C13,44 6,42 6,41 Z
+        C104,44 90,44 80,44
+        C76,44 73,41 71,39
+        L49,39
+        C46,44 34,44 22,44
+        C13,44 7,42 7,41 Z
       "/>
       <!-- Body highlight -->
       <path fill="rgba(255,255,255,0.06)" d="
-        M27,18 L48,14 L78,14
-        C90,14 101,19 109,26
-        L102,21 C93,15 81,13 68,13
-        L50,13 C39,13 28,17 21,22 Z
+        M28,17 L50,13 L80,13
+        C94,13 104,19 111,28
+        L104,22 C96,15 84,12 70,12
+        L50,12 C38,12 28,16 21,21 Z
       "/>
-      <!-- Glass -->
+      <!-- Glass (low, sweeping fastback) -->
       <path fill="rgba(160,210,255,0.22)" d="
-        M30,18 C38,15 47,14 56,14
-        L79,14 C91,14 101,20 109,27
-        L92,31 L36,31
-        C30,27 28,23 30,18 Z
+        M30,17 C39,14 51,13 62,13
+        L80,13 C93,13 103,19 110,28
+        L93,31 L36,31
+        C30,27 28,22 30,17 Z
       "/>
       <!-- B-pillar -->
-      <rect x="63" y="14" width="3.5" height="17" rx="1.5" fill="rgba(0,0,0,0.4)"/>
-      <!-- C-pillar shading -->
-      <path fill="rgba(0,0,0,0.2)" d="M88,14 L109,27 L92,31 L90,14 Z"/>
-      <!-- DRL headlight strip -->
-      <rect x="8" y="28" width="9" height="2.5" rx="1.25" fill="rgba(255,255,210,0.9)"/>
-      <!-- Lower amber indicator -->
-      <rect x="8" y="31" width="5" height="1.5" rx="0.75" fill="rgba(255,180,80,0.8)"/>
+      <rect x="61" y="13" width="3" height="18" rx="1.5" fill="rgba(0,0,0,0.4)"/>
+      <!-- C-pillar (sweeping fastback angle) -->
+      <path fill="rgba(0,0,0,0.28)" d="M82,13 L110,28 L93,31 L82,13 Z"/>
+      <!-- DRL headlight -->
+      <rect x="8" y="27" width="9" height="2.5" rx="1.25" fill="rgba(255,255,210,0.9)"/>
+      <rect x="8" y="30" width="5" height="1.5" rx="0.75" fill="rgba(255,180,80,0.7)"/>
       <!-- Taillight -->
-      <rect x="107" y="26" width="5" height="8" rx="1.5" fill="rgba(255,50,50,0.85)"/>
+      <rect x="109" y="27" width="4" height="7" rx="1" fill="rgba(255,50,50,0.85)"/>
       <!-- Wheel well shadows -->
-      <ellipse cx="28" cy="44" rx="11" ry="3.5" fill="rgba(0,0,0,0.55)"/>
-      <ellipse cx="90" cy="44" rx="11" ry="3.5" fill="rgba(0,0,0,0.55)"/>
+      <ellipse cx="28" cy="43" rx="11" ry="3.5" fill="rgba(0,0,0,0.55)"/>
+      <ellipse cx="89" cy="43" rx="11" ry="3.5" fill="rgba(0,0,0,0.55)"/>
       <!-- Wheels -->
-      <use href="#wheel" x="20" y="36" width="16" height="16"/>
-      <use href="#wheel" x="82" y="36" width="16" height="16"/>
+      <use href="#wheel" x="20" y="35" width="16" height="16"/>
+      <use href="#wheel" x="81" y="35" width="16" height="16"/>
     </symbol>
 
-    <!-- AMG GT: long aggressive hood, fastback roofline -->
+    <!-- AMG GT: extreme long hood, fastback sports car -->
     <symbol id="car-amg-gt" viewBox="0 0 120 50">
       <ellipse cx="60" cy="48.5" rx="51" ry="2" fill="rgba(0,0,0,0.5)"/>
-      <!-- Body -->
+      <!-- Body (very long hood, very low) -->
       <path fill="currentColor" d="
         M5,41 L5,36
         C6,30 12,26 20,23
@@ -111,7 +147,7 @@
         L105,22 C97,16 88,14 76,14
         L68,14 C62,14 57,16 54,18 Z
       "/>
-      <!-- Glass (raked fastback) -->
+      <!-- Glass (raked, short fastback) -->
       <path fill="rgba(160,210,255,0.22)" d="
         M60,17 C64,15 70,14 78,14 L88,14
         C97,15 104,20 112,27
@@ -126,8 +162,8 @@
       <rect x="6" y="31" width="7" height="2.5" rx="1.25" fill="rgba(255,255,210,0.9)"/>
       <!-- Taillight (tall) -->
       <rect x="109" y="27" width="4" height="10" rx="1" fill="rgba(255,50,50,0.85)"/>
-      <!-- Side skirt accent line -->
-      <rect x="5" y="38" width="109" height="2.5" rx="0" fill="rgba(0,0,0,0.3)"/>
+      <!-- Side skirt accent -->
+      <rect x="5" y="38" width="109" height="2.5" fill="rgba(0,0,0,0.3)"/>
       <!-- Wheel well shadows -->
       <ellipse cx="26" cy="44" rx="11" ry="3.5" fill="rgba(0,0,0,0.55)"/>
       <ellipse cx="86" cy="44" rx="11" ry="3.5" fill="rgba(0,0,0,0.55)"/>
@@ -136,201 +172,169 @@
       <use href="#wheel" x="78" y="36" width="16" height="16"/>
     </symbol>
 
-    <!-- G-Class: tall boxy off-roader -->
-    <symbol id="car-g-class" viewBox="0 0 120 50">
-      <ellipse cx="60" cy="48.5" rx="52" ry="2" fill="rgba(0,0,0,0.5)"/>
-      <!-- Body (very boxy) -->
+    <!-- 300 SL: classic gullwing with iconic side vents -->
+    <symbol id="car-300sl" viewBox="0 0 120 50">
+      <ellipse cx="60" cy="48.5" rx="50" ry="2" fill="rgba(0,0,0,0.5)"/>
+      <!-- Body (rounded, organic classic shape) -->
       <path fill="currentColor" d="
-        M8,42 L8,9
-        C8,8 9,8 12,8
-        L108,8 C111,8 112,9 112,10
-        L112,42
-        C102,45 88,45 79,45
-        C74,45 71,42 69,40
-        L51,40
-        C48,45 32,45 20,45
-        C14,45 8,44 8,42 Z
+        M9,40 L9,33
+        C10,23 20,17 32,15
+        C42,13 55,12 66,12
+        L80,12
+        C92,12 102,17 110,26
+        L112,33 L112,40
+        C102,43 90,44 82,44
+        C78,44 75,41 73,39
+        L47,39
+        C44,44 34,44 22,44
+        C14,44 9,42 9,40 Z
       "/>
-      <!-- Windshield (near-vertical) -->
-      <path fill="rgba(160,210,255,0.22)" d="M16,8 L16,31 L46,31 L46,8 Z"/>
-      <!-- Rear window -->
-      <path fill="rgba(160,210,255,0.22)" d="M74,8 L74,31 L104,31 L104,8 Z"/>
-      <!-- Centre pillar (thick) -->
-      <rect x="46" y="8" width="28" height="23" fill="rgba(0,0,0,0.48)"/>
-      <!-- Roof rack bar -->
-      <rect x="12" y="6.5" width="96" height="2.5" rx="1" fill="rgba(60,60,60,0.9)"/>
-      <!-- Roof rack cross-members -->
-      <rect x="25" y="5" width="5" height="4" rx="0.5" fill="rgba(70,70,70,0.9)"/>
-      <rect x="50" y="5" width="5" height="4" rx="0.5" fill="rgba(70,70,70,0.9)"/>
-      <rect x="75" y="5" width="5" height="4" rx="0.5" fill="rgba(70,70,70,0.9)"/>
-      <!-- Iconic round headlights -->
-      <circle cx="11" cy="20" r="5" fill="rgba(0,0,0,0.65)"/>
-      <circle cx="11" cy="20" r="4" fill="rgba(255,255,210,0.9)"/>
-      <circle cx="11" cy="20" r="1.5" fill="rgba(255,255,255,0.6)"/>
-      <!-- Taillight strip -->
-      <rect x="109" y="13" width="3" height="14" rx="1" fill="rgba(255,50,50,0.85)"/>
-      <!-- Spare wheel on rear -->
-      <circle cx="109" cy="32" r="6" fill="rgba(0,0,0,0.35)" stroke="rgba(100,100,100,0.5)" stroke-width="1.5"/>
-      <circle cx="109" cy="32" r="3.5" fill="rgba(40,40,40,0.7)"/>
-      <circle cx="109" cy="32" r="1.2" fill="rgba(80,80,80,0.8)"/>
+      <!-- Body highlight (rounded classic sheen) -->
+      <path fill="rgba(255,255,255,0.07)" d="
+        M32,15 C42,13 55,12 66,12
+        L80,12 C92,12 102,17 110,26
+        L103,19 C95,13 84,11 72,11
+        L58,11 C46,11 36,14 28,19 Z
+      "/>
+      <!-- Glass (classic proportions) -->
+      <path fill="rgba(160,210,255,0.22)" d="
+        M34,15 C44,12 57,12 68,12
+        L80,12 C92,12 101,17 109,26
+        L92,30 L38,30
+        C32,26 31,20 34,15 Z
+      "/>
+      <!-- A-pillar shadow -->
+      <path fill="rgba(0,0,0,0.22)" d="M38,30 L34,15 L38,13 Z"/>
+      <!-- C-pillar shadow -->
+      <path fill="rgba(0,0,0,0.25)" d="M82,12 L109,26 L92,30 L82,12 Z"/>
+      <!-- ICONIC SIDE VENTS (horizontal louvers — signature 300 SL feature) -->
+      <rect x="42" y="28" width="24" height="10" rx="2" fill="rgba(0,0,0,0.35)" stroke="rgba(80,80,80,0.5)" stroke-width="0.8"/>
+      <line x1="42" y1="30.5" x2="66" y2="30.5" stroke="rgba(0,0,0,0.6)" stroke-width="1.2"/>
+      <line x1="42" y1="33"   x2="66" y2="33"   stroke="rgba(0,0,0,0.6)" stroke-width="1.2"/>
+      <line x1="42" y1="35.5" x2="66" y2="35.5" stroke="rgba(0,0,0,0.6)" stroke-width="1.2"/>
+      <!-- Round headlight (classic) -->
+      <circle cx="11" cy="27" r="5" fill="rgba(0,0,0,0.6)"/>
+      <circle cx="11" cy="27" r="4" fill="rgba(255,255,210,0.9)"/>
+      <circle cx="11" cy="27" r="1.6" fill="rgba(255,255,255,0.5)"/>
+      <!-- Round taillight -->
+      <circle cx="110" cy="29" r="4" fill="rgba(255,50,50,0.85)"/>
+      <circle cx="110" cy="29" r="1.8" fill="rgba(255,150,150,0.6)"/>
+      <!-- Chrome bumper hints -->
+      <path fill="none" stroke="rgba(180,180,180,0.35)" stroke-width="2" stroke-linecap="round"
+            d="M9,35 L9,39 C9,40 10,41 12,41"/>
       <!-- Wheel well shadows -->
-      <ellipse cx="32" cy="44" rx="12" ry="3.5" fill="rgba(0,0,0,0.55)"/>
-      <ellipse cx="88" cy="44" rx="12" ry="3.5" fill="rgba(0,0,0,0.55)"/>
-      <!-- Wheels (larger off-road tyres) -->
-      <use href="#wheel" x="23" y="35" width="18" height="18"/>
-      <use href="#wheel" x="79" y="35" width="18" height="18"/>
+      <ellipse cx="29" cy="43" rx="11" ry="3.5" fill="rgba(0,0,0,0.55)"/>
+      <ellipse cx="88" cy="43" rx="11" ry="3.5" fill="rgba(0,0,0,0.55)"/>
+      <!-- Wheels (narrower classic style) -->
+      <use href="#wheel" x="21" y="35" width="16" height="16"/>
+      <use href="#wheel" x="80" y="35" width="16" height="16"/>
     </symbol>
 
-    <!-- C-Class: compact sporting sedan -->
+    <!-- AMG GT R: track-focused GT with rear wing -->
+    <symbol id="car-amg-gtr" viewBox="0 0 120 50">
+      <ellipse cx="60" cy="48.5" rx="51" ry="2" fill="rgba(0,0,0,0.5)"/>
+      <!-- Body (same aggressive shape as AMG GT) -->
+      <path fill="currentColor" d="
+        M5,41 L5,36
+        C6,30 12,26 20,23
+        C26,21 38,19 52,18
+        L60,17 C64,15 70,14 78,14
+        L88,14
+        C98,15 105,20 112,27
+        L114,35 L114,41
+        C103,44 88,44 78,44
+        C74,44 71,41 68,39
+        L40,39
+        C37,44 26,44 14,44
+        C8,44 5,42 5,41 Z
+      "/>
+      <!-- Rear wing (distinctive GT R feature) -->
+      <rect x="100" y="8" width="16" height="2.5" rx="1" fill="currentColor" opacity="0.9"/>
+      <rect x="104" y="8" width="2" height="6" rx="0.5" fill="rgba(0,0,0,0.5)"/>
+      <rect x="112" y="8" width="2" height="6" rx="0.5" fill="rgba(0,0,0,0.5)"/>
+      <!-- Hood bulge (larger than GT) -->
+      <path fill="rgba(0,0,0,0.22)" d="M10,29 L52,18 L60,17 L52,21 L10,33 Z"/>
+      <!-- Body highlight -->
+      <path fill="rgba(255,255,255,0.07)" d="
+        M54,18 C60,16 68,14 78,14 L88,14
+        C98,15 104,19 111,26
+        L105,22 C97,16 88,14 76,14
+        L68,14 C62,14 57,16 54,18 Z
+      "/>
+      <!-- Glass -->
+      <path fill="rgba(160,210,255,0.22)" d="
+        M60,17 C64,15 70,14 78,14 L88,14
+        C97,15 104,20 112,27
+        L93,31 L50,31
+        C52,25 56,21 60,17 Z
+      "/>
+      <!-- A-pillar shadow -->
+      <path fill="rgba(0,0,0,0.25)" d="M50,31 L60,17 L64,14 L60,17 L50,31 Z"/>
+      <!-- C-pillar -->
+      <path fill="rgba(0,0,0,0.3)" d="M88,14 L112,27 L93,31 L90,14 Z"/>
+      <!-- Aggressive headlight -->
+      <rect x="6" y="30" width="8" height="3" rx="1.25" fill="rgba(255,255,210,0.9)"/>
+      <!-- Taillight -->
+      <rect x="109" y="27" width="4" height="10" rx="1" fill="rgba(255,50,50,0.85)"/>
+      <!-- Wide body flares (subtle thickening on sides) -->
+      <rect x="5" y="37" width="109" height="3" fill="rgba(0,0,0,0.35)"/>
+      <!-- Wheel well shadows -->
+      <ellipse cx="26" cy="44" rx="12" ry="3.5" fill="rgba(0,0,0,0.55)"/>
+      <ellipse cx="86" cy="44" rx="12" ry="3.5" fill="rgba(0,0,0,0.55)"/>
+      <!-- Wider wheels (track setup) -->
+      <use href="#wheel" x="17" y="35" width="18" height="18"/>
+      <use href="#wheel" x="77" y="35" width="18" height="18"/>
+    </symbol>
+
+    <!-- C-Class W202: classic 90s boxy sedan -->
     <symbol id="car-c-class" viewBox="0 0 120 50">
       <ellipse cx="60" cy="48.5" rx="50" ry="2" fill="rgba(0,0,0,0.5)"/>
-      <!-- Body (sportier, shorter than S-Class) -->
+      <!-- Body (boxy 90s proportions, flat roof, clear 3-box) -->
       <path fill="currentColor" d="
-        M8,41 L8,34
-        C9,24 20,20 30,18
-        L50,14 L76,14
-        C90,14 100,21 109,29
-        L111,36 L111,41
-        C101,44 88,44 79,44
+        M8,41 L8,33
+        C9,23 20,18 32,16
+        L50,14 L78,14
+        C90,14 100,18 108,26
+        L110,34 L110,41
+        C100,44 88,44 79,44
         C75,44 72,41 70,39
         L50,39
         C47,44 36,44 24,44
         C15,44 8,42 8,41 Z
       "/>
-      <!-- Body highlight -->
+      <!-- Body highlight (flatter, 90s boxy character) -->
       <path fill="rgba(255,255,255,0.06)" d="
-        M30,18 L50,14 L76,14
-        C89,14 99,20 108,28
-        L101,23 C92,16 80,14 67,14
-        L52,14 C40,14 31,17 24,22 Z
+        M32,16 L50,14 L78,14
+        C90,14 100,18 108,26
+        L101,20 C93,14 82,13 68,13
+        L50,13 C39,13 31,16 25,21 Z
       "/>
-      <!-- Glass -->
+      <!-- Glass (more upright, flatter roof) -->
       <path fill="rgba(160,210,255,0.22)" d="
-        M32,18 C40,15 49,14 57,14
-        L77,14 C89,14 99,21 108,29
-        L90,32 L38,32
-        C32,28 30,23 32,18 Z
+        M34,16 C42,14 51,14 60,14
+        L78,14 C89,14 99,18 107,26
+        L90,30 L38,30
+        C32,27 31,21 34,16 Z
       "/>
-      <!-- B-pillar -->
-      <rect x="62" y="14" width="3" height="18" rx="1.5" fill="rgba(0,0,0,0.4)"/>
-      <!-- C-pillar shading -->
-      <path fill="rgba(0,0,0,0.2)" d="M88,14 L108,29 L90,32 L88,14 Z"/>
-      <!-- Sport line accent -->
-      <path fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1.5" d="M8,37 L111,37"/>
-      <!-- DRL headlight -->
-      <rect x="9" y="28" width="7" height="2.5" rx="1.25" fill="rgba(255,255,210,0.9)"/>
-      <!-- Taillight -->
-      <rect x="106" y="27" width="4" height="7" rx="1" fill="rgba(255,50,50,0.85)"/>
+      <!-- Flat roof line (90s character — nearly horizontal) -->
+      <rect x="34" y="13" width="46" height="1.5" rx="0.5" fill="rgba(0,0,0,0.25)"/>
+      <!-- B-pillar (thicker, 90s) -->
+      <rect x="62" y="14" width="4" height="16" rx="1.5" fill="rgba(0,0,0,0.42)"/>
+      <!-- C-pillar (more upright than modern) -->
+      <path fill="rgba(0,0,0,0.22)" d="M84,14 L107,26 L90,30 L82,14 Z"/>
+      <!-- Chrome waistline (90s detail) -->
+      <path fill="none" stroke="rgba(200,200,200,0.2)" stroke-width="1" d="M9,32 L108,32"/>
+      <!-- Rectangular headlight (90s style) -->
+      <rect x="9" y="24" width="8" height="5" rx="1" fill="rgba(255,255,210,0.9)"/>
+      <rect x="9" y="30" width="5" height="2" rx="0.5" fill="rgba(255,180,80,0.7)"/>
+      <!-- Rectangular taillight (90s style) -->
+      <rect x="105" y="26" width="4" height="8" rx="1" fill="rgba(255,50,50,0.85)"/>
       <!-- Wheel well shadows -->
       <ellipse cx="30" cy="43" rx="10" ry="3.5" fill="rgba(0,0,0,0.55)"/>
-      <ellipse cx="88" cy="43" rx="10" ry="3.5" fill="rgba(0,0,0,0.55)"/>
+      <ellipse cx="87" cy="43" rx="10" ry="3.5" fill="rgba(0,0,0,0.55)"/>
       <!-- Wheels -->
       <use href="#wheel" x="22" y="35" width="16" height="16"/>
-      <use href="#wheel" x="80" y="35" width="16" height="16"/>
-    </symbol>
-
-    <!-- EQS: smooth one-bow electric fastback -->
-    <symbol id="car-eqs" viewBox="0 0 120 50">
-      <ellipse cx="60" cy="48.5" rx="52" ry="2" fill="rgba(0,0,0,0.5)"/>
-      <!-- Body (very smooth one-bow shape) -->
-      <path fill="currentColor" d="
-        M6,41 L7,34
-        C9,24 22,18 36,15
-        L55,12 L75,12
-        C92,12 104,19 112,28
-        L115,36 L115,41
-        C105,44 91,44 81,44
-        C77,44 74,41 71,39
-        L49,39
-        C46,44 29,44 17,44
-        C10,44 6,42 6,41 Z
-      "/>
-      <!-- Smooth body highlight (aero) -->
-      <path fill="rgba(255,255,255,0.07)" d="
-        M36,15 L55,12 L75,12
-        C92,12 104,19 112,28
-        L104,21 C96,14 83,11 68,11
-        L54,11 C44,11 35,13 28,17 Z
-      "/>
-      <!-- Large flowing glass (one-bow) -->
-      <path fill="rgba(160,210,255,0.25)" d="
-        M26,18 C34,14 48,12 60,12
-        L76,12 C92,12 103,19 111,28
-        L93,32 L30,32
-        C25,27 24,23 26,18 Z
-      "/>
-      <!-- Gently raked A-pillar shadow -->
-      <path fill="rgba(0,0,0,0.2)" d="M30,32 L36,18 L40,12 L37,15 Z"/>
-      <!-- Fastback C-pillar -->
-      <path fill="rgba(0,0,0,0.3)" d="M90,12 L111,28 L93,32 L90,12 Z"/>
-      <!-- Flush LED headlight (thin) -->
-      <rect x="8" y="27.5" width="10" height="2" rx="1" fill="rgba(255,255,210,0.95)"/>
-      <!-- Below-light styling crease -->
-      <rect x="8" y="30" width="6" height="1" rx="0.5" fill="rgba(255,255,255,0.12)"/>
-      <!-- Flush LED taillight (thin) -->
-      <rect x="107" y="27" width="7" height="2" rx="1" fill="rgba(255,50,50,0.9)"/>
-      <!-- Closed EV front (no grille) -->
-      <rect x="8" y="32" width="5" height="4" rx="1" fill="rgba(0,0,0,0.5)"/>
-      <!-- EV charge port (blue accent) -->
-      <rect x="112" y="22" width="2.5" height="4" rx="0.5" fill="rgba(80,190,255,0.8)"/>
-      <!-- Wheel well shadows -->
-      <ellipse cx="28" cy="43" rx="12" ry="3.5" fill="rgba(0,0,0,0.55)"/>
-      <ellipse cx="90" cy="43" rx="12" ry="3.5" fill="rgba(0,0,0,0.55)"/>
-      <!-- Wheels (large diameter EV style) -->
-      <use href="#wheel" x="19" y="34" width="18" height="18"/>
-      <use href="#wheel" x="81" y="34" width="18" height="18"/>
-    </symbol>
-
-    <!-- GLE: tall rounded luxury SUV -->
-    <symbol id="car-gle" viewBox="0 0 120 50">
-      <ellipse cx="60" cy="48.5" rx="51" ry="2" fill="rgba(0,0,0,0.5)"/>
-      <!-- Body (tall, rounded SUV) -->
-      <path fill="currentColor" d="
-        M8,41 L8,26
-        C9,16 21,11 34,10
-        L55,9 L72,9
-        C88,9 100,14 109,22
-        L112,30 L112,41
-        C102,45 88,45 79,45
-        C75,45 72,42 70,40
-        L50,40
-        C47,45 34,45 22,45
-        C13,45 8,43 8,41 Z
-      "/>
-      <!-- Body highlight -->
-      <path fill="rgba(255,255,255,0.06)" d="
-        M34,10 L55,9 L72,9
-        C88,9 100,14 109,22
-        L103,17 C94,10 83,8 68,8
-        L54,8 C44,8 35,10 28,14 Z
-      "/>
-      <!-- Glass (taller SUV greenhouse) -->
-      <path fill="rgba(160,210,255,0.22)" d="
-        M30,12 C40,9 52,9 62,9
-        L73,9 C87,9 99,14 108,22
-        L92,27 L36,27
-        C29,22 28,17 30,12 Z
-      "/>
-      <!-- Thick B-pillar (SUV) -->
-      <rect x="64" y="9" width="5" height="18" rx="2" fill="rgba(0,0,0,0.45)"/>
-      <!-- C-pillar shading -->
-      <path fill="rgba(0,0,0,0.25)" d="M90,9 L108,22 L92,27 L89,9 Z"/>
-      <!-- Chrome roof rails -->
-      <rect x="20" y="8" width="80" height="2.5" rx="1" fill="rgba(90,90,90,0.9)"/>
-      <!-- Running board -->
-      <rect x="8" y="37" width="104" height="3.5" rx="1.5" fill="rgba(0,0,0,0.38)"/>
-      <!-- Angular headlight -->
-      <rect x="9" y="20" width="8" height="3" rx="1" fill="rgba(255,255,210,0.9)"/>
-      <!-- Lower fog light -->
-      <rect x="9" y="24" width="5" height="2" rx="1" fill="rgba(255,220,180,0.7)"/>
-      <!-- Taillight (tall) -->
-      <rect x="106" y="19" width="5" height="10" rx="1.5" fill="rgba(255,50,50,0.85)"/>
-      <!-- Wheel well shadows -->
-      <ellipse cx="32" cy="44" rx="12" ry="3.5" fill="rgba(0,0,0,0.55)"/>
-      <ellipse cx="88" cy="44" rx="12" ry="3.5" fill="rgba(0,0,0,0.55)"/>
-      <!-- Wheels (larger SUV diameter) -->
-      <use href="#wheel" x="23" y="35" width="18" height="18"/>
-      <use href="#wheel" x="79" y="35" width="18" height="18"/>
+      <use href="#wheel" x="79" y="35" width="16" height="16"/>
     </symbol>
 
   </defs>
@@ -358,29 +362,29 @@
       <div class="field-group">
         <label class="field-label">CHOOSE YOUR CAR</label>
         <div class="car-grid" id="car-grid">
-          <button class="car-option" data-model="s-class" type="button">
-            <svg viewBox="0 0 120 50" class="car-option-svg"><use href="#car-s-class"/></svg>
-            <span class="car-option-name">S-Class</span>
+          <button class="car-option" data-model="a-class" type="button">
+            <img src="/cars/a-class.jpg" class="car-option-img" alt="A-Class">
+            <span class="car-option-name">A-Class</span>
+          </button>
+          <button class="car-option" data-model="cla" type="button">
+            <img src="/cars/cla.jpg" class="car-option-img" alt="CLA">
+            <span class="car-option-name">CLA</span>
           </button>
           <button class="car-option" data-model="amg-gt" type="button">
-            <svg viewBox="0 0 120 50" class="car-option-svg"><use href="#car-amg-gt"/></svg>
+            <img src="/cars/amg-gt.jpg" class="car-option-img" alt="AMG GT">
             <span class="car-option-name">AMG GT</span>
           </button>
-          <button class="car-option" data-model="g-class" type="button">
-            <svg viewBox="0 0 120 50" class="car-option-svg"><use href="#car-g-class"/></svg>
-            <span class="car-option-name">G-Class</span>
+          <button class="car-option" data-model="300sl" type="button">
+            <img src="/cars/300sl.jpg" class="car-option-img" alt="300 SL">
+            <span class="car-option-name">300 SL</span>
+          </button>
+          <button class="car-option" data-model="amg-gtr" type="button">
+            <img src="/cars/amg-gtr.jpg" class="car-option-img" alt="AMG GT R">
+            <span class="car-option-name">AMG GT R</span>
           </button>
           <button class="car-option" data-model="c-class" type="button">
-            <svg viewBox="0 0 120 50" class="car-option-svg"><use href="#car-c-class"/></svg>
+            <img src="/cars/c-class.jpg" class="car-option-img" alt="C-Class">
             <span class="car-option-name">C-Class</span>
-          </button>
-          <button class="car-option" data-model="eqs" type="button">
-            <svg viewBox="0 0 120 50" class="car-option-svg"><use href="#car-eqs"/></svg>
-            <span class="car-option-name">EQS</span>
-          </button>
-          <button class="car-option" data-model="gle" type="button">
-            <svg viewBox="0 0 120 50" class="car-option-svg"><use href="#car-gle"/></svg>
-            <span class="car-option-name">GLE</span>
           </button>
         </div>
       </div>
@@ -450,6 +454,9 @@
 <section id="screen-race" class="screen">
   <div id="countdown-overlay" class="countdown-overlay hidden">
     <span id="countdown-number">3</span>
+    <p id="countdown-hint" class="countdown-hint hidden">
+      Alternate <kbd>A</kbd> and <kbd>B</kbd> — keep the pattern to accelerate!
+    </p>
   </div>
 
   <div class="race-header">
