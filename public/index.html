@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Mercedes Grand Prix</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ── Inline SVG Symbol Library ─────────────────────────────────────────── -->
+<svg style="display:none" aria-hidden="true">
+  <defs>
+
+    <!-- Mercedes Three-Pointed Star -->
+    <symbol id="icon-star" viewBox="0 0 60 60">
+      <circle cx="30" cy="30" r="28" fill="none" stroke="currentColor" stroke-width="2"/>
+      <!-- Three points at 90°, 210°, 330° -->
+      <path fill="currentColor" d="
+        M30,4 L33.5,26 L30,30 L26.5,26 Z
+        M30,30 L50,43.7 L47,40 L30,30 Z
+        M30,30 L10,43.7 L13,40 L30,30 Z
+      "/>
+    </symbol>
+
+    <!-- S-Class: long low luxury sedan -->
+    <symbol id="car-s-class" viewBox="0 0 120 50">
+      <!-- Body -->
+      <path fill="currentColor" d="
+        M6,41 L6,33
+        Q8,23 18,20
+        Q30,15 46,14
+        L78,14
+        Q94,15 104,21
+        Q113,28 115,35
+        L115,41
+        Q105,44 90,44
+        Q83,44 80,40
+        L68,38 L52,38
+        Q49,44 28,44
+        Q14,44 6,41 Z
+      "/>
+      <!-- Glass -->
+      <path fill="rgba(180,225,255,0.18)" d="
+        M22,20 Q32,15 48,14
+        L78,14
+        Q92,15 102,21
+        L88,30 L34,30
+        Q27,27 22,20 Z
+      "/>
+      <!-- Headlight -->
+      <rect x="7" y="26" width="6" height="4" rx="2" fill="rgba(255,255,210,0.85)"/>
+      <!-- Taillight -->
+      <rect x="108" y="27" width="5" height="7" rx="1.5" fill="rgba(255,60,60,0.85)"/>
+      <!-- Front wheel -->
+      <circle cx="28" cy="44" r="8" fill="#1a1a1a" stroke="#555" stroke-width="1.5"/>
+      <circle cx="28" cy="44" r="3.5" fill="#555"/>
+      <!-- Rear wheel -->
+      <circle cx="90" cy="44" r="8" fill="#1a1a1a" stroke="#555" stroke-width="1.5"/>
+      <circle cx="90" cy="44" r="3.5" fill="#555"/>
+    </symbol>
+
+    <!-- AMG GT: long aggressive hood, fastback roofline -->
+    <symbol id="car-amg-gt" viewBox="0 0 120 50">
+      <!-- Body -->
+      <path fill="currentColor" d="
+        M5,41 L5,36
+        Q7,30 14,26
+        Q20,21 36,19
+        L52,18
+        Q59,16 65,14
+        L88,14
+        Q97,15 105,21
+        Q112,27 114,35
+        L114,41
+        Q104,44 86,44
+        Q79,44 76,40
+        L68,39 L40,39
+        Q38,44 24,44
+        Q12,44 5,41 Z
+      "/>
+      <!-- Glass (raked, short) -->
+      <path fill="rgba(180,225,255,0.18)" d="
+        M55,18 Q61,14 67,14
+        L88,14
+        Q97,15 104,21
+        L89,29 L48,29
+        Q50,23 55,18 Z
+      "/>
+      <!-- Long hood line accent -->
+      <line x1="8" y1="29" x2="52" y2="21" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+      <!-- Headlight -->
+      <rect x="6" y="29" width="6" height="3" rx="1.5" fill="rgba(255,255,210,0.85)"/>
+      <!-- Taillight -->
+      <rect x="109" y="28" width="4" height="8" rx="1.5" fill="rgba(255,60,60,0.85)"/>
+      <!-- Front wheel -->
+      <circle cx="26" cy="44" r="8" fill="#1a1a1a" stroke="#555" stroke-width="1.5"/>
+      <circle cx="26" cy="44" r="3.5" fill="#555"/>
+      <!-- Rear wheel -->
+      <circle cx="86" cy="44" r="8" fill="#1a1a1a" stroke="#555" stroke-width="1.5"/>
+      <circle cx="86" cy="44" r="3.5" fill="#555"/>
+    </symbol>
+
+    <!-- G-Class: tall boxy SUV -->
+    <symbol id="car-g-class" viewBox="0 0 120 50">
+      <!-- Body (very boxy) -->
+      <path fill="currentColor" d="
+        M8,42 L8,10
+        Q10,8 14,8
+        L106,8
+        Q110,8 112,10
+        L112,42
+        Q100,45 88,45
+        Q80,45 78,41
+        L68,39 L52,39
+        Q50,45 32,45
+        Q18,45 8,42 Z
+      "/>
+      <!-- Windshield (upright) -->
+      <path fill="rgba(180,225,255,0.18)" d="
+        M16,8 L16,30 L44,30 L44,8 Z
+      "/>
+      <!-- Rear window -->
+      <path fill="rgba(180,225,255,0.18)" d="
+        M76,8 L76,30 L104,30 L104,8 Z
+      "/>
+      <!-- Roof rack line -->
+      <rect x="16" y="8" width="88" height="3" rx="0" fill="rgba(0,0,0,0.25)"/>
+      <!-- Headlight (round) -->
+      <circle cx="11" cy="20" r="4" fill="rgba(255,255,210,0.85)"/>
+      <!-- Taillight -->
+      <rect x="108" y="16" width="4" height="10" rx="1" fill="rgba(255,60,60,0.85)"/>
+      <!-- Spare tire indicator on rear -->
+      <circle cx="109" cy="32" r="5" fill="rgba(0,0,0,0.3)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+      <!-- Front wheel -->
+      <circle cx="32" cy="45" r="8" fill="#1a1a1a" stroke="#555" stroke-width="1.5"/>
+      <circle cx="32" cy="45" r="3.5" fill="#555"/>
+      <!-- Rear wheel -->
+      <circle cx="88" cy="45" r="8" fill="#1a1a1a" stroke="#555" stroke-width="1.5"/>
+      <circle cx="88" cy="45" r="3.5" fill="#555"/>
+    </symbol>
+
+    <!-- C-Class: compact sporting sedan -->
+    <symbol id="car-c-class" viewBox="0 0 120 50">
+      <!-- Body (shorter, sportier than S-Class) -->
+      <path fill="currentColor" d="
+        M8,41 L8,33
+        Q10,23 22,20
+        Q34,15 48,14
+        L76,14
+        Q90,15 100,22
+        Q110,29 112,36
+        L112,41
+        Q102,44 88,44
+        Q81,44 78,40
+        L68,38 L52,38
+        Q49,44 30,44
+        Q16,44 8,41 Z
+      "/>
+      <!-- Glass (slightly more upright than S) -->
+      <path fill="rgba(180,225,255,0.18)" d="
+        M26,20 Q36,15 50,14
+        L76,14
+        Q88,15 98,22
+        L86,30 L38,30
+        Q31,27 26,20 Z
+      "/>
+      <!-- Headlight -->
+      <rect x="9" y="26" width="5" height="4" rx="2" fill="rgba(255,255,210,0.85)"/>
+      <!-- Taillight -->
+      <rect x="107" y="28" width="4" height="6" rx="1.5" fill="rgba(255,60,60,0.85)"/>
+      <!-- Front wheel -->
+      <circle cx="30" cy="44" r="8" fill="#1a1a1a" stroke="#555" stroke-width="1.5"/>
+      <circle cx="30" cy="44" r="3.5" fill="#555"/>
+      <!-- Rear wheel -->
+      <circle cx="88" cy="44" r="8" fill="#1a1a1a" stroke="#555" stroke-width="1.5"/>
+      <circle cx="88" cy="44" r="3.5" fill="#555"/>
+    </symbol>
+
+    <!-- EQS: smooth electric fastback (one-bow design) -->
+    <symbol id="car-eqs" viewBox="0 0 120 50">
+      <!-- Body (very smooth one-bow shape) -->
+      <path fill="currentColor" d="
+        M6,41 L7,34
+        Q10,24 22,19
+        Q36,13 55,12
+        L75,12
+        Q92,13 104,20
+        Q114,27 116,35
+        L116,41
+        Q106,44 90,44
+        Q83,44 80,40
+        L68,38 L52,38
+        Q49,44 28,44
+        Q14,44 6,41 Z
+      "/>
+      <!-- Glass (very smooth, large) -->
+      <path fill="rgba(180,225,255,0.18)" d="
+        M24,19 Q38,13 57,12
+        L75,12
+        Q90,13 102,20
+        L90,30 L32,30
+        Q27,26 24,19 Z
+      "/>
+      <!-- Flush headlight (thin strip) -->
+      <rect x="8" y="28" width="8" height="2.5" rx="1.25" fill="rgba(255,255,210,0.9)"/>
+      <!-- Flush taillight (thin strip) -->
+      <rect x="107" y="27" width="7" height="2.5" rx="1.25" fill="rgba(255,60,60,0.9)"/>
+      <!-- Electric frunk (closed-off front - no traditional grille) -->
+      <rect x="9" y="32" width="4" height="1" rx="0.5" fill="rgba(255,255,255,0.15)"/>
+      <!-- Front wheel -->
+      <circle cx="28" cy="44" r="9" fill="#1a1a1a" stroke="#555" stroke-width="1.5"/>
+      <circle cx="28" cy="44" r="4" fill="#555"/>
+      <!-- Rear wheel -->
+      <circle cx="90" cy="44" r="9" fill="#1a1a1a" stroke="#555" stroke-width="1.5"/>
+      <circle cx="90" cy="44" r="4" fill="#555"/>
+    </symbol>
+
+    <!-- GLE: tall rounded SUV -->
+    <symbol id="car-gle" viewBox="0 0 120 50">
+      <!-- Body (tall, rounded SUV) -->
+      <path fill="currentColor" d="
+        M8,41 L8,26
+        Q10,16 22,12
+        Q36,9 55,9
+        L72,9
+        Q88,9 100,14
+        Q110,19 112,27
+        L112,41
+        Q102,45 88,45
+        Q80,45 77,41
+        L68,39 L52,39
+        Q49,45 32,45
+        Q17,45 8,41 Z
+      "/>
+      <!-- Glass (upright, SUV-like) -->
+      <path fill="rgba(180,225,255,0.18)" d="
+        M26,12 Q38,9 57,9
+        L72,9
+        Q86,9 98,14
+        L88,26 L34,26
+        Q27,20 26,12 Z
+      "/>
+      <!-- Running board accent -->
+      <rect x="8" y="36" width="104" height="3" rx="1" fill="rgba(0,0,0,0.3)"/>
+      <!-- Headlight (angular) -->
+      <rect x="9" y="20" width="7" height="4" rx="1.5" fill="rgba(255,255,210,0.85)"/>
+      <!-- Taillight -->
+      <rect x="106" y="21" width="5" height="8" rx="1.5" fill="rgba(255,60,60,0.85)"/>
+      <!-- Front wheel -->
+      <circle cx="32" cy="45" r="8" fill="#1a1a1a" stroke="#555" stroke-width="1.5"/>
+      <circle cx="32" cy="45" r="3.5" fill="#555"/>
+      <!-- Rear wheel -->
+      <circle cx="88" cy="45" r="8" fill="#1a1a1a" stroke="#555" stroke-width="1.5"/>
+      <circle cx="88" cy="45" r="3.5" fill="#555"/>
+    </symbol>
+
+  </defs>
+</svg>
+
+<!-- ── Screen: Landing ──────────────────────────────────────────────────────── -->
+<section id="screen-landing" class="screen active">
+  <div class="landing-inner">
+    <header class="brand-header">
+      <svg class="brand-star" viewBox="0 0 60 60" aria-label="Mercedes star">
+        <use href="#icon-star"/>
+      </svg>
+      <div class="brand-text">
+        <span class="brand-name">MERCEDES</span>
+        <span class="brand-sub">GRAND PRIX</span>
+      </div>
+    </header>
+
+    <div class="card landing-card">
+      <div class="field-group">
+        <label for="input-name" class="field-label">YOUR NAME</label>
+        <input id="input-name" type="text" class="field-input" placeholder="Enter your name" maxlength="20" autocomplete="off" />
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">CHOOSE YOUR CAR</label>
+        <div class="car-grid" id="car-grid">
+          <button class="car-option" data-model="s-class" type="button">
+            <svg viewBox="0 0 120 50" class="car-option-svg"><use href="#car-s-class"/></svg>
+            <span class="car-option-name">S-Class</span>
+          </button>
+          <button class="car-option" data-model="amg-gt" type="button">
+            <svg viewBox="0 0 120 50" class="car-option-svg"><use href="#car-amg-gt"/></svg>
+            <span class="car-option-name">AMG GT</span>
+          </button>
+          <button class="car-option" data-model="g-class" type="button">
+            <svg viewBox="0 0 120 50" class="car-option-svg"><use href="#car-g-class"/></svg>
+            <span class="car-option-name">G-Class</span>
+          </button>
+          <button class="car-option" data-model="c-class" type="button">
+            <svg viewBox="0 0 120 50" class="car-option-svg"><use href="#car-c-class"/></svg>
+            <span class="car-option-name">C-Class</span>
+          </button>
+          <button class="car-option" data-model="eqs" type="button">
+            <svg viewBox="0 0 120 50" class="car-option-svg"><use href="#car-eqs"/></svg>
+            <span class="car-option-name">EQS</span>
+          </button>
+          <button class="car-option" data-model="gle" type="button">
+            <svg viewBox="0 0 120 50" class="car-option-svg"><use href="#car-gle"/></svg>
+            <span class="car-option-name">GLE</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="landing-actions">
+        <button id="btn-create" class="btn btn-primary" type="button" disabled>Create Room</button>
+        <button id="btn-show-join" class="btn btn-secondary" type="button" disabled>Join Room</button>
+      </div>
+
+      <div id="join-panel" class="join-panel hidden">
+        <div class="field-group">
+          <label for="input-room-code" class="field-label">ROOM CODE</label>
+          <input id="input-room-code" type="text" class="field-input field-input--code" placeholder="XXXXXX" maxlength="6" autocomplete="off" />
+        </div>
+        <button id="btn-confirm-join" class="btn btn-primary" type="button">Join Race</button>
+      </div>
+
+      <p id="landing-error" class="error-msg hidden"></p>
+    </div>
+
+    <p class="loading-note" id="loading-note">Connecting to server...</p>
+  </div>
+</section>
+
+<!-- ── Screen: Lobby ───────────────────────────────────────────────────────── -->
+<section id="screen-lobby" class="screen">
+  <div class="lobby-inner">
+    <header class="lobby-header">
+      <svg class="brand-star brand-star--sm" viewBox="0 0 60 60">
+        <use href="#icon-star"/>
+      </svg>
+      <div class="brand-text">
+        <span class="brand-name brand-name--sm">MERCEDES GRAND PRIX</span>
+      </div>
+    </header>
+
+    <div class="lobby-body">
+      <div class="card room-code-card">
+        <p class="room-code-label">ROOM CODE</p>
+        <p class="room-code-display" id="lobby-room-code">------</p>
+        <div class="share-row">
+          <input id="lobby-share-link" class="share-link-input" readonly />
+          <button id="btn-copy-link" class="btn btn-copy" type="button">Copy Link</button>
+        </div>
+      </div>
+
+      <div class="card players-card">
+        <div class="players-card-header">
+          <span class="players-title">DRIVERS</span>
+          <span class="players-count" id="lobby-player-count">0 / 16</span>
+        </div>
+        <div class="player-list" id="lobby-player-list"></div>
+      </div>
+    </div>
+
+    <div class="lobby-footer">
+      <button id="btn-start-race" class="btn btn-race hidden" type="button" disabled>
+        <svg viewBox="0 0 60 60" class="btn-star-icon"><use href="#icon-star"/></svg>
+        Start Race
+      </button>
+      <p class="lobby-waiting" id="lobby-waiting">Waiting for the host to start the race...</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── Screen: Race ────────────────────────────────────────────────────────── -->
+<section id="screen-race" class="screen">
+  <div id="countdown-overlay" class="countdown-overlay hidden">
+    <span id="countdown-number">3</span>
+  </div>
+
+  <div class="race-header">
+    <div class="race-header-left">
+      <svg viewBox="0 0 60 60" class="race-star"><use href="#icon-star"/></svg>
+      <span class="race-driver-name" id="race-driver-name"></span>
+    </div>
+    <div class="race-header-right">
+      <span class="race-click-label">CLICKS</span>
+      <span class="race-click-count" id="race-click-count">0</span>
+    </div>
+  </div>
+
+  <div class="track-container" id="track-container">
+    <!-- Lanes injected dynamically -->
+  </div>
+
+  <div class="click-zone">
+    <p class="ab-instruction">Alternate <kbd>A</kbd> and <kbd>B</kbd> to accelerate</p>
+    <div class="ab-buttons">
+      <button id="btn-a" class="btn-ab" data-key="a" type="button" aria-label="Press A">
+        <span class="btn-ab-key">A</span>
+        <span class="btn-ab-hint">next</span>
+      </button>
+      <div class="ab-divider">
+        <svg viewBox="0 0 60 60" class="ab-star"><use href="#icon-star"/></svg>
+      </div>
+      <button id="btn-b" class="btn-ab" data-key="b" type="button" aria-label="Press B">
+        <span class="btn-ab-key">B</span>
+        <span class="btn-ab-hint">next</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ── Screen: Results ─────────────────────────────────────────────────────── -->
+<section id="screen-results" class="screen">
+  <div class="results-inner">
+    <header class="results-header">
+      <svg class="brand-star" viewBox="0 0 60 60">
+        <use href="#icon-star"/>
+      </svg>
+      <h1 class="results-title">RACE RESULTS</h1>
+    </header>
+
+    <div class="podium-row" id="podium-row">
+      <!-- Top 3 injected dynamically -->
+    </div>
+
+    <div class="card results-list-card">
+      <div class="results-list" id="results-list">
+        <!-- Full ranking injected dynamically -->
+      </div>
+    </div>
+
+    <div class="results-actions">
+      <button id="btn-play-again" class="btn btn-race hidden" type="button">
+        <svg viewBox="0 0 60 60" class="btn-star-icon"><use href="#icon-star"/></svg>
+        Race Again
+      </button>
+      <p class="results-waiting" id="results-waiting">Waiting for host to start next race...</p>
+    </div>
+  </div>
+</section>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="game.js"></script>
+</body>
+</html>

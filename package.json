@@ -1,0 +1,18 @@
+{
+  "name": "mercedes-race",
+  "version": "1.0.0",
+  "description": "Mercedes-themed multiplayer carnival racing game",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "socket.io": "^4.7.4",
+    "nanoid": "^3.3.7"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
