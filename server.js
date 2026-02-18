@@ -256,8 +256,8 @@ io.on('connection', (socket) => {
     room.raceStartedAt = Date.now();
     room.finishedCount = 0;
 
-    const startTime = Date.now() + 3500;
-    io.to(roomCode).emit('race-started', { startTime });
+    const startDelay = 3500;
+    io.to(roomCode).emit('race-started', { startDelay });
 
     // Progress broadcast loop at 20Hz
     room.broadcastInterval = setInterval(() => {
@@ -297,14 +297,14 @@ io.on('connection', (socket) => {
         time: now - room.raceStartedAt,
       });
 
-      // First finisher: cancel the 5-min timeout, start a 30-second last-chance timer
+      // First finisher: cancel the 5-min timeout, start a 5-second last-chance timer
       if (player.rank === 1) {
         clearTimeout(room.raceTimeout);
-        const endsAt = Date.now() + 5000;
-        io.to(roomCode).emit('first-finisher-countdown', { endsAt });
+        const countdownDuration = 5000;
+        io.to(roomCode).emit('first-finisher-countdown', { duration: countdownDuration });
         room.firstFinishTimeout = setTimeout(() => {
           if (room.phase === 'racing') endRace(room, roomCode);
-        }, 5000);
+        }, countdownDuration);
       }
 
       checkAllFinished(room, roomCode);

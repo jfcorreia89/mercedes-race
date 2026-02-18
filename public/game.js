@@ -387,11 +387,6 @@ function handleKeyPress(key) {
   updateCarPosition(state.mySocketId, myProgress);
   document.getElementById('race-click-count').textContent = Math.min(CLICKS_TO_FINISH, state.clickCount);
 
-  // Optimistically stop input once we hit 100 — don't wait for server round-trip
-  if (state.clickCount >= CLICKS_TO_FINISH) {
-    state.myFinished = true;
-  }
-
   // Visual feedback
   flashPressed(key);
 
@@ -611,7 +606,8 @@ function bindSocket() {
   });
 
   // ── Race events ────────────────────────────────────────────────────────────
-  socket.on('race-started', ({ startTime }) => {
+  socket.on('race-started', ({ startDelay }) => {
+    const startTime = Date.now() + startDelay;
     state.clickCount = 0;
     state.lastClickSent = 0;
     state.nextKey = 'a';
@@ -663,7 +659,8 @@ function bindSocket() {
     }
   });
 
-  socket.on('first-finisher-countdown', ({ endsAt }) => {
+  socket.on('first-finisher-countdown', ({ duration }) => {
+    const endsAt = Date.now() + duration;
     const banner = document.getElementById('last-chance-banner');
     const secEl  = document.getElementById('last-chance-seconds');
     if (!banner || !secEl) return;
