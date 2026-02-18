@@ -89,6 +89,7 @@ function endRace(room, roomCode) {
   room.phase = 'finished';
   clearInterval(room.broadcastInterval);
   clearTimeout(room.raceTimeout);
+  clearTimeout(room.firstFinishTimeout);
   const results = buildResultsArray(room);
   io.to(roomCode).emit('race-finished', { results });
 }
@@ -162,6 +163,7 @@ io.on('connection', (socket) => {
       finishedCount: 0,
       broadcastInterval: null,
       raceTimeout: null,
+      firstFinishTimeout: null,
     };
 
     rooms.set(code, room);
@@ -294,6 +296,17 @@ io.on('connection', (socket) => {
         rank: player.rank,
         time: now - room.raceStartedAt,
       });
+
+      // First finisher: cancel the 5-min timeout, start a 30-second last-chance timer
+      if (player.rank === 1) {
+        clearTimeout(room.raceTimeout);
+        const endsAt = Date.now() + 5000;
+        io.to(roomCode).emit('first-finisher-countdown', { endsAt });
+        room.firstFinishTimeout = setTimeout(() => {
+          if (room.phase === 'racing') endRace(room, roomCode);
+        }, 5000);
+      }
+
       checkAllFinished(room, roomCode);
     }
   });
@@ -306,9 +319,11 @@ io.on('connection', (socket) => {
 
     clearInterval(room.broadcastInterval);
     clearTimeout(room.raceTimeout);
+    clearTimeout(room.firstFinishTimeout);
     room.phase = 'lobby';
     room.raceStartedAt = null;
     room.finishedCount = 0;
+    room.firstFinishTimeout = null;
 
     for (const player of room.players.values()) {
       player.progress = 0;

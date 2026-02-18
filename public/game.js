@@ -31,6 +31,7 @@ const state = {
   myFinished:    false,    // true once my car crosses the finish line
   countdownTimer: null,
   raceTimer:     null,     // interval handle for the live race timer
+  lastChanceTimer: null,   // interval for the post-winner countdown banner
 };
 
 // ─── Screen switching ─────────────────────────────────────────────────────────
@@ -225,6 +226,7 @@ function bindLobby() {
 // RACE SCREEN
 // ═══════════════════════════════════════════════════════════════════════════════
 function buildRaceScreen() {
+  hideLastChanceBanner();
   const container = document.getElementById('track-container');
   container.innerHTML = '';
 
@@ -273,6 +275,13 @@ function buildLane(player, totalPlayers) {
     <div class="lane-progress" id="progress-${player.socketId}">0%</div>
   `;
   return lane;
+}
+
+function hideLastChanceBanner() {
+  clearInterval(state.lastChanceTimer);
+  state.lastChanceTimer = null;
+  const banner = document.getElementById('last-chance-banner');
+  if (banner) banner.classList.add('hidden');
 }
 
 function updateCarPosition(socketId, progress) {
@@ -440,12 +449,9 @@ function buildPodium(results) {
   const top3 = results.slice(0, 3);
   // Order: 2nd, 1st, 3rd
   const displayOrder = [top3[1], top3[0], top3[2]].filter(Boolean);
-  const rankClass = ['--2nd', '--1st', '--3rd'];
-  const rankIndex = [2, 1, 3];
 
-  displayOrder.forEach((player, i) => {
+  displayOrder.forEach((player) => {
     const pos = player.rank;
-    const isFirst = pos === 1;
     const cls = pos === 1 ? '--1st' : pos === 2 ? '--2nd' : '--3rd';
 
     const item = document.createElement('div');
@@ -527,7 +533,7 @@ function bindSocket() {
     enterLobby(code, [player], socket.id);
   });
 
-  socket.on('room-joined', ({ code, players, hostId, phase }) => {
+  socket.on('room-joined', ({ code, players, hostId }) => {
     state.isHost = socket.id === hostId;
     const me = players.find(p => p.socketId === socket.id);
     if (me) state.myName = me.name;
@@ -548,7 +554,6 @@ function bindSocket() {
   // ── Lobby events ───────────────────────────────────────────────────────────
   socket.on('player-joined', ({ player }) => {
     state.players[player.socketId] = player;
-    const hostId = Object.values(state.players).find(p => p.socketId === state.socket.id)?.socketId;
 
     const list = document.getElementById('lobby-player-list');
     if (list) list.appendChild(buildPlayerCard(player, state.roomHostId || ''));
@@ -658,10 +663,34 @@ function bindSocket() {
     }
   });
 
+  socket.on('first-finisher-countdown', ({ endsAt }) => {
+    const banner = document.getElementById('last-chance-banner');
+    const secEl  = document.getElementById('last-chance-seconds');
+    if (!banner || !secEl) return;
+
+    banner.classList.remove('hidden');
+    banner.classList.add('urgent');
+
+    clearInterval(state.lastChanceTimer);
+    state.lastChanceTimer = setInterval(() => {
+      const remaining = Math.ceil((endsAt - Date.now()) / 1000);
+      if (remaining <= 0) {
+        secEl.textContent = '0';
+        clearInterval(state.lastChanceTimer);
+        return;
+      }
+      secEl.textContent = remaining;
+      if (remaining <= 5) {
+        banner.classList.add('urgent');
+      }
+    }, 250);
+  });
+
   socket.on('race-finished', ({ results }) => {
     state.phase = 'finished';
     clearInterval(state.countdownTimer);
     clearInterval(state.raceTimer);
+    hideLastChanceBanner();
 
     setTimeout(() => {
       buildResults(results);
@@ -675,6 +704,7 @@ function bindSocket() {
     state.clickCount = 0;
     clearInterval(state.raceTimer);
     state.raceTimer = null;
+    hideLastChanceBanner();
     state.players = {};
     players.forEach(p => { state.players[p.socketId] = p; });
     state.isHost = socket.id === hostId;
