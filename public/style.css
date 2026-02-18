@@ -1123,6 +1123,80 @@ html, body {
   .race-header { padding: 7px 16px; }
 }
 
+/* ─── Turbo Bar ──────────────────────────────────────────────────────────── */
+.turbo-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0 2px;
+}
+.turbo-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--silver-500);
+  min-width: 38px;
+}
+.turbo-segments {
+  display: flex;
+  gap: 3px;
+  flex: 1;
+}
+.turbo-seg {
+  flex: 1;
+  height: 5px;
+  border-radius: 3px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  transition: background 0.08s, border-color 0.08s;
+}
+.turbo-seg.filled {
+  background: var(--silver-400);
+  border-color: var(--silver-400);
+}
+.turbo-bar.turbo-active .turbo-seg {
+  background: #FFD700;
+  border-color: #FFD700;
+  box-shadow: 0 0 5px rgba(255,215,0,0.55);
+}
+.turbo-ready {
+  font-size: 13px;
+  font-weight: 800;
+  color: #FFD700;
+  min-width: 26px;
+  text-align: right;
+  letter-spacing: 0.04em;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.turbo-ready.visible {
+  opacity: 1;
+  text-shadow: 0 0 8px rgba(255,215,0,0.7);
+}
+
+/* ─── Obstacle / Blowout ─────────────────────────────────────────────────── */
+@keyframes obstacle-flash {
+  0%, 100% { background: transparent; }
+  30%, 70% { background: rgba(255,80,0,0.22); }
+}
+.obstacle-hit {
+  animation: obstacle-flash 0.35s ease-in-out 4;
+}
+.blowout-badge {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  color: #FF4400;
+  text-shadow: 0 0 10px rgba(255,68,0,0.9);
+  pointer-events: none;
+  z-index: 10;
+  white-space: nowrap;
+}
+
 /* scrollbar styling */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }

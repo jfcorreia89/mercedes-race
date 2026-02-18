@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css?v=3" />
+  <link rel="stylesheet" href="style.css?v=4" />
 </head>
 <body>
 
@@ -482,7 +482,7 @@
   </div>
 
   <div class="click-zone">
-    <p class="ab-instruction">Alternate <kbd>A</kbd> and <kbd>B</kbd> to accelerate</p>
+    <p class="ab-instruction">Alternate <kbd>A</kbd> and <kbd>B</kbd> to accelerate — build a 10-combo for TURBO</p>
     <div class="ab-buttons">
       <button id="btn-a" class="btn-ab" data-key="a" type="button" aria-label="Press A">
         <span class="btn-ab-key">A</span>
@@ -495,6 +495,16 @@
         <span class="btn-ab-key">B</span>
         <span class="btn-ab-hint">next</span>
       </button>
+    </div>
+    <div class="turbo-bar" id="turbo-bar">
+      <span class="turbo-label">TURBO</span>
+      <div class="turbo-segments">
+        <div class="turbo-seg"></div><div class="turbo-seg"></div><div class="turbo-seg"></div>
+        <div class="turbo-seg"></div><div class="turbo-seg"></div><div class="turbo-seg"></div>
+        <div class="turbo-seg"></div><div class="turbo-seg"></div><div class="turbo-seg"></div>
+        <div class="turbo-seg"></div>
+      </div>
+      <span class="turbo-ready" id="turbo-ready"></span>
     </div>
   </div>
 </section>
@@ -530,6 +540,6 @@
 </section>
 
 <script src="/socket.io/socket.io.js"></script>
-<script src="game.js?v=3"></script>
+<script src="game.js?v=4"></script>
 </body>
 </html>

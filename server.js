@@ -90,8 +90,27 @@ function endRace(room, roomCode) {
   clearInterval(room.broadcastInterval);
   clearTimeout(room.raceTimeout);
   clearTimeout(room.firstFinishTimeout);
+  clearTimeout(room.obstacleTimeout);
   const results = buildResultsArray(room);
   io.to(roomCode).emit('race-finished', { results });
+}
+
+function scheduleNextObstacle(room, roomCode) {
+  const delay = 4000 + Math.random() * 3000; // 4–7 s between obstacles
+  room.obstacleTimeout = setTimeout(() => {
+    if (room.phase !== 'racing') return;
+    const eligible = [...room.players.values()].filter(
+      p => !p.disconnected && !p.finishedAt && !p.frozen
+    );
+    if (eligible.length > 0) {
+      const target = eligible[Math.floor(Math.random() * eligible.length)];
+      const duration = 1200;
+      target.frozen = true;
+      io.to(target.socketId).emit('obstacle', { duration });
+      setTimeout(() => { target.frozen = false; }, duration);
+    }
+    scheduleNextObstacle(room, roomCode);
+  }, delay);
 }
 
 function handleDisconnect(socket) {
@@ -151,6 +170,7 @@ io.on('connection', (socket) => {
       rank: null,
       dnf: false,
       disconnected: false,
+      frozen: false,
     };
 
     const room = {
@@ -164,6 +184,7 @@ io.on('connection', (socket) => {
       broadcastInterval: null,
       raceTimeout: null,
       firstFinishTimeout: null,
+      obstacleTimeout: null,
     };
 
     rooms.set(code, room);
@@ -193,6 +214,7 @@ io.on('connection', (socket) => {
       rank: null,
       dnf: false,
       disconnected: false,
+      frozen: false,
     };
 
     room.players.set(socket.id, player);
@@ -227,6 +249,7 @@ io.on('connection', (socket) => {
       rank: null,
       dnf: false,
       disconnected: false,
+      frozen: false,
     };
 
     room.players.set(socket.id, player);
@@ -271,21 +294,18 @@ io.on('connection', (socket) => {
       if (room.phase !== 'racing') return;
       endRace(room, roomCode);
     }, 5 * 60 * 1000);
+
+    // First obstacle fires 5 s after race start, then every 4–7 s
+    room.obstacleTimeout = setTimeout(() => scheduleNextObstacle(room, roomCode), 5000);
   });
 
-  // ── Click ────────────────────────────────────────────────────────────────────
-  socket.on('click', ({ roomCode }) => {
-    const room = rooms.get(roomCode);
-    if (!room || room.phase !== 'racing') return;
-
-    const player = room.players.get(socket.id);
-    if (!player || player.finishedAt || player.disconnected) return;
-
+  // ── Shared click processor ────────────────────────────────────────────────
+  function processClick(room, roomCode, player, gain) {
     const now = Date.now();
-    if (now - player.lastClickTime < 50) return; // server-side throttle: max 20 CPS
+    if (now - player.lastClickTime < 50) return; // max 20 CPS
 
     player.lastClickTime = now;
-    player.clickCount = Math.min(100, player.clickCount + 1);
+    player.clickCount = Math.min(100, player.clickCount + gain);
     player.progress = player.clickCount;
 
     if (player.clickCount >= 100 && !player.finishedAt) {
@@ -297,7 +317,6 @@ io.on('connection', (socket) => {
         time: now - room.raceStartedAt,
       });
 
-      // First finisher: cancel the 5-min timeout, start a 5-second last-chance timer
       if (player.rank === 1) {
         clearTimeout(room.raceTimeout);
         const countdownDuration = 5000;
@@ -309,6 +328,24 @@ io.on('connection', (socket) => {
 
       checkAllFinished(room, roomCode);
     }
+  }
+
+  // ── Click ────────────────────────────────────────────────────────────────────
+  socket.on('click', ({ roomCode }) => {
+    const room = rooms.get(roomCode);
+    if (!room || room.phase !== 'racing') return;
+    const player = room.players.get(socket.id);
+    if (!player || player.finishedAt || player.disconnected || player.frozen) return;
+    processClick(room, roomCode, player, 1);
+  });
+
+  // ── Turbo click (counts as 2 progress) ───────────────────────────────────
+  socket.on('turbo-click', ({ roomCode }) => {
+    const room = rooms.get(roomCode);
+    if (!room || room.phase !== 'racing') return;
+    const player = room.players.get(socket.id);
+    if (!player || player.finishedAt || player.disconnected || player.frozen) return;
+    processClick(room, roomCode, player, 2);
   });
 
   // ── Reset room (play again) ──────────────────────────────────────────────────
@@ -320,10 +357,12 @@ io.on('connection', (socket) => {
     clearInterval(room.broadcastInterval);
     clearTimeout(room.raceTimeout);
     clearTimeout(room.firstFinishTimeout);
+    clearTimeout(room.obstacleTimeout);
     room.phase = 'lobby';
     room.raceStartedAt = null;
     room.finishedCount = 0;
     room.firstFinishTimeout = null;
+    room.obstacleTimeout = null;
 
     for (const player of room.players.values()) {
       player.progress = 0;
@@ -332,6 +371,7 @@ io.on('connection', (socket) => {
       player.finishedAt = null;
       player.rank = null;
       player.dnf = false;
+      player.frozen = false;
       player.disconnected = false;
     }
 

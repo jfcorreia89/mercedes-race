@@ -32,6 +32,9 @@ const state = {
   countdownTimer: null,
   raceTimer:     null,     // interval handle for the live race timer
   lastChanceTimer: null,   // interval for the post-winner countdown banner
+  comboCount:    0,        // consecutive correct A/B presses (resets on wrong key)
+  turboRemaining: 0,       // turbo presses remaining (3 when activated)
+  penaltyUntil:  0,        // timestamp until input is unfrozen (wrong key or obstacle)
 };
 
 // ─── Screen switching ─────────────────────────────────────────────────────────
@@ -227,6 +230,7 @@ function bindLobby() {
 // ═══════════════════════════════════════════════════════════════════════════════
 function buildRaceScreen() {
   hideLastChanceBanner();
+  resetTurboBar();
   const container = document.getElementById('track-container');
   container.innerHTML = '';
 
@@ -282,6 +286,33 @@ function hideLastChanceBanner() {
   state.lastChanceTimer = null;
   const banner = document.getElementById('last-chance-banner');
   if (banner) banner.classList.add('hidden');
+}
+
+function updateTurboBar() {
+  const segments = document.querySelectorAll('.turbo-seg');
+  const readyEl  = document.getElementById('turbo-ready');
+  const barEl    = document.getElementById('turbo-bar');
+  if (!segments.length || !readyEl || !barEl) return;
+
+  if (state.turboRemaining > 0) {
+    segments.forEach(s => s.classList.add('filled'));
+    barEl.classList.add('turbo-active');
+    readyEl.textContent = '×' + state.turboRemaining;
+    readyEl.classList.add('visible');
+  } else {
+    const filled = state.comboCount % 10;
+    segments.forEach((s, i) => s.classList.toggle('filled', i < filled));
+    barEl.classList.remove('turbo-active');
+    readyEl.textContent = '';
+    readyEl.classList.remove('visible');
+  }
+}
+
+function resetTurboBar() {
+  state.comboCount = 0;
+  state.turboRemaining = 0;
+  state.penaltyUntil = 0;
+  updateTurboBar();
 }
 
 function updateCarPosition(socketId, progress) {
@@ -372,17 +403,38 @@ function handleKeyPress(key) {
   if (state.phase !== 'racing' || state.myFinished) return;
 
   const now = Date.now();
+
+  // Frozen? (wrong-key penalty 200ms, or obstacle up to 1200ms)
+  if (now < state.penaltyUntil) return;
+
   if (now - state.lastClickSent < CLICK_THROTTLE_MS) return;
 
   if (key !== state.nextKey) {
+    // Wrong key: reset combo, freeze input 200ms
+    state.comboCount = 0;
+    state.turboRemaining = 0;
+    state.penaltyUntil = now + 200;
+    updateTurboBar();
     flashWrong(key);
     return;
   }
 
   state.lastClickSent = now;
 
-  // Optimistic update
-  state.clickCount++;
+  // Advance combo and check for turbo activation (every 10 correct presses)
+  state.comboCount++;
+  if (state.comboCount % 10 === 0) {
+    state.turboRemaining = 3;
+  }
+
+  // Use turbo if available
+  const isTurbo = state.turboRemaining > 0;
+  if (isTurbo) state.turboRemaining--;
+  updateTurboBar();
+
+  // Optimistic update (turbo = +2 progress, normal = +1)
+  const gain = isTurbo ? 2 : 1;
+  state.clickCount += gain;
   const myProgress = Math.min(CLICKS_TO_FINISH, state.clickCount);
   updateCarPosition(state.mySocketId, myProgress);
   document.getElementById('race-click-count').textContent = Math.min(CLICKS_TO_FINISH, state.clickCount);
@@ -394,7 +446,7 @@ function handleKeyPress(key) {
   setActiveKey(key === 'a' ? 'b' : 'a');
 
   // Send to server
-  state.socket.emit('click', { roomCode: state.roomCode });
+  state.socket.emit(isTurbo ? 'turbo-click' : 'click', { roomCode: state.roomCode });
 }
 
 function bindRace() {
@@ -612,6 +664,9 @@ function bindSocket() {
     state.lastClickSent = 0;
     state.nextKey = 'a';
     state.myFinished = false;
+    state.comboCount = 0;
+    state.turboRemaining = 0;
+    state.penaltyUntil = 0;
     Object.values(state.players).forEach(p => { p.progress = 0; });
     startCountdown(startTime);
   });
@@ -659,6 +714,28 @@ function bindSocket() {
     }
   });
 
+  socket.on('obstacle', ({ duration }) => {
+    if (state.phase !== 'racing' || state.myFinished) return;
+    state.penaltyUntil = Date.now() + duration;
+
+    // Flash my lane
+    const myLane = document.getElementById('lane-' + state.mySocketId);
+    if (myLane) {
+      myLane.classList.add('obstacle-hit');
+      setTimeout(() => myLane.classList.remove('obstacle-hit'), duration + 300);
+    }
+
+    // Show BLOWOUT! badge on my track
+    const myTrack = document.getElementById('track-' + state.mySocketId);
+    if (myTrack) {
+      const badge = document.createElement('div');
+      badge.className = 'blowout-badge';
+      badge.textContent = 'BLOWOUT!';
+      myTrack.appendChild(badge);
+      setTimeout(() => badge.remove(), duration + 300);
+    }
+  });
+
   socket.on('first-finisher-countdown', ({ duration }) => {
     const endsAt = Date.now() + duration;
     const banner = document.getElementById('last-chance-banner');
@@ -702,6 +779,7 @@ function bindSocket() {
     clearInterval(state.raceTimer);
     state.raceTimer = null;
     hideLastChanceBanner();
+    resetTurboBar();
     state.players = {};
     players.forEach(p => { state.players[p.socketId] = p; });
     state.isHost = socket.id === hostId;
